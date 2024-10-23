@@ -15,13 +15,15 @@ public class DbUtils {
 
     private static final DataSource DATASOURCE;
 
+
+
     static {
         BasicDataSource basicDataSource = new BasicDataSource();
 
         //todo#0 {ip},{databases},{username},{password}설정
-        basicDataSource.setUrl("jdbc:mysql://{ip}:3306/{database}");
-        basicDataSource.setUsername("{username}");
-        basicDataSource.setPassword("{password}");
+        basicDataSource.setUrl("jdbc:mysql://{ip}:3306/{nhn_academy_37}");
+        basicDataSource.setUsername("{nhn_academy_37}");
+        basicDataSource.setPassword("{xo-5vMk2*gQpu*f1}");
 
         basicDataSource.setInitialSize(5);
         basicDataSource.setMaxTotal(5);

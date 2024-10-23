@@ -48,9 +48,10 @@ public class StatementStudentRepository implements StudentRepository {
 
         log.debug("findById:{}",sql);
         try(Connection connection = DbUtils.getConnection();
-            Statement ps = connection.prepareStatement(sql)
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
         ) {
-
+            Student student = new Student(rs.getCursorName(id))
         } catch (SQLException e) {
           throw new RuntimeException(e);
         }

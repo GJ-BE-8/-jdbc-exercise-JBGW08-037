@@ -1,9 +1,11 @@
 package com.nhnacademy.jdbc.student.repository.impl;
 
 import com.nhnacademy.jdbc.student.domain.Student;
+import com.nhnacademy.jdbc.student.domain.Student.GENDER;
 import com.nhnacademy.jdbc.student.repository.StudentRepository;
 import com.nhnacademy.jdbc.util.DbUtils;
 import java.util.logging.Logger;
+import javax.naming.Name;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -51,7 +53,10 @@ public class StatementStudentRepository implements StudentRepository {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
         ) {
-            Student student = new Student(rs.getCursorName(id))
+            Student student = new Student(rs.getString("id"),
+                rs.getString("name"), (GENDER) rs.getObject("gender"),
+                rs.getInt("age"));
+
         } catch (SQLException e) {
           throw new RuntimeException(e);
         }
@@ -62,15 +67,37 @@ public class StatementStudentRepository implements StudentRepository {
     @Override
     public int update(Student student){
         //todo#3 student 수정, name <- 수정합니다.
+        String sql = String.format("update jdbc_students set name = %s where student_id = %s", student.getName(),student.getId());
+        log.debug("update:{}",sql);
 
-        return 0;
+        try(Connection connection = DbUtils.getConnection();
+            Statement statement = connection.createStatement();
+        ) {
+            int result = statement.executeUpdate(sql);
+            log.debug("result:{}",result);
+            return result;
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public int deleteById(String id){
        //todo#4 student 삭제
+        String sql = String.format("delete from jdbc_students where student_id = %s",id);
+        log.debug("delete:{}",sql);
 
-        return 0;
+        try(Connection connection = DbUtils.getConnection();
+            Statement statement = connection.createStatement();
+        ) {
+            int result = statement.executeUpdate(sql);
+            log.debug("result:{}",result);
+            return result;
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+
     }
 
 }
